@@ -43,8 +43,12 @@ async function main()
             datasets: 
             [{
                 label: 'Highest',
-                backgroundColor: getColor(stock.meta.symbol),
-                borderColor: getColor(stock.meta.symbol),
+                backgroundColor: stocks.map(stock => {
+                    getColor(stock.meta.symbol)
+                }),
+                borderColor: stocks.map(stock => {
+                    getColor(stock.meta.symbol)
+                }), 
                 data:stock.map(stock => {
                     getHighest(stock.values)
                 })
