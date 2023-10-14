@@ -33,20 +33,57 @@ async function main()
             }))
         }
     });  
+
+    new Chart(highestPriceChartCanvas.getContext('2d'),
+    {
+        type: 'bar',
+        data: 
+        {
+            labels: stocks.map(stock => stock.meta.symbol),
+            datasets: 
+            [{
+                label: 'Highest',
+                backgroundColor: getColor(stock.meta.symbol),
+                borderColor: getColor(stock.meta.symbol),
+                data:stock.map(stock => {
+                    getHighest(stock.values)
+                })
+            }]
+        }
+
+    });
+
+}
+
+function getHighest(values)
+{
+    let highest = 0;
+    values.forEach( value => {
+        if(values.high > highest)
+        {
+            highest = values.high
+        }
+        return highest
+    })
 }
 
 //differet colors for each line of stocks
-function getColor(stock){
-    if(stock === "GME"){
+function getColor(stock)
+{
+    if(stock === "GME")
+    {
         return 'rgba(61, 161, 61, 0.7)'
     }
-    if(stock === "MSFT"){
+    if(stock === "MSFT")
+    {
         return 'rgba(209, 4, 25, 0.7)'
     }
-    if(stock === "DIS"){
+    if(stock === "DIS")
+    {
         return 'rgba(18, 4, 209, 0.7)'
     }
-    if(stock === "BNTX"){
+    if(stock === "BNTX")
+    {
         return 'rgba(166, 43, 158, 0.7)'
     }
 }
