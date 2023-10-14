@@ -6,16 +6,19 @@ async function main()
     const averagePriceChartCanvas = document.querySelector('#average-price-chart');
 
     //fetch stock data from twelvedata.com
-    const data = await fetch('https://api.twelvedata.com/time_series?symbol=GME,MSFT,DIS,BTNX&interval=1day&apikey=507bf540879d404982af9bf55ba142a6')
+    const data = await fetch('https://api.twelvedata.com/time_series?symbol=GME,MSFT,DIS,BNTX&interval=1day&apikey=b2b0e11651294ee9a789558a1625b754')
+    
 
     // checking to see if the fecth works 
     const working = await data.json()
 
+    console.log(working)
     //destructed object to array
     const {GME, MSFT, DIS, BNTX} = working;
 
     const stocks = [GME, MSFT, DIS, BNTX];
 
+    
     stocks.forEach(stock => stock.values.reverse())
 
     //making a time chart for the fetched stocks
@@ -34,7 +37,7 @@ async function main()
         }
     });  
 
-    new Chart(highestPriceChartCanvas.getContext('2d'),
+     new Chart(highestPriceChartCanvas.getContext('2d'),
     {
         type: 'bar',
         data: 
@@ -49,7 +52,7 @@ async function main()
                 borderColor: stocks.map(stock => {
                     getColor(stock.meta.symbol)
                 }), 
-                data:stock.map(stock => {
+                data: stocks.map(stock => {
                     getHighest(stock.values)
                 })
             }]
@@ -63,12 +66,14 @@ function getHighest(values)
 {
     let highest = 0;
     values.forEach( value => {
-        if(values.high > highest)
+        if(parseFloat(value.high) > highest)
         {
-            highest = values.high
+            highest = value.high
         }
         return highest
+       
     })
+    
 }
 
 //differet colors for each line of stocks
